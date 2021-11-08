@@ -17,7 +17,7 @@
 import { ref, reactive, watch, onMounted } from "vue";
 const APPID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
 const APPKEY = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
-const BASEURL = "https://ptx.transportdata.tw/MOTC/";
+const BASEURL = "https://ptx.111transportdata.tw/MOTC/";
 
 const PTXURLOBJ = {
   "Tourism.ScenicSpot": "v2/Tourism/ScenicSpot",
