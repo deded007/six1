@@ -1,4 +1,14 @@
 
+<script >
+import { ref, reactive, watch, onMounted } from "vue";
+export default {
+  setup() {
+    const selectedItem = ref(0);
+    return { selectedItem };
+  },
+};
+</script>
+
 <style lang="scss" scoped>
 .icon {
   @apply w-[180px] text-green-900 rounded active:bg-[#FEB155] hover:bg-[#FEB155] hover:cursor-pointer;
@@ -12,6 +22,7 @@
   <div class="flex my-8">
     <div class="flex justify-around ml-[185px] mr-[185px] w-[1550px]">
       <svg
+        :class="selectedItem == 0 ? 'bg-[#FEB155]' : '' "
         viewBox="0 0 270 104"
         class="icon active"
         fill="none"
@@ -158,12 +169,3 @@
     </div>
   </div>
 </template>
-
-<script >
-import { ref, reactive, watch, onMounted } from "vue";
-export default {
-  setup() {
-    return {};
-  },
-};
-</script>
