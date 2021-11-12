@@ -11,7 +11,7 @@ export default {
 
 <style lang="scss" scoped>
 .icon {
-  @apply w-[250px] text-green-900 rounded-xl active:bg-[#FEB155] hover:bg-[#FEB155] hover:cursor-pointer;
+  @apply w-[220px] text-green-900 rounded-xl active:bg-[#FEB155] hover:bg-[#FEB155] hover:cursor-pointer;
 }
 .iconx {
   @apply bg-white hover:bg-white hover:cursor-not-allowed;
