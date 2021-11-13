@@ -1,9 +1,13 @@
 <template>
+  <h1 class="text-7xl">detail未完成</h1>
   <div class="container">
     <h1>https://leafletjs.com/reference-1.7.1.html</h1>
     {{ data.response }}
     <select v-model="data.selected.county">
-      <option :value="county" v-for="county in Object.keys(data.countyobj)">
+      <option
+        :value="county"
+        v-for="county in Object.keys(data.countyobj)"
+      >
         {{ county }}
       </option>
     </select>
@@ -88,7 +92,7 @@ export default {
       () => data.selected,
       (newVal) => {
         console.log(newVal);
-        
+
         getPTXData(
           PTXURLOBJ["Tourism.ScenicSpot"],
           data.countyobj[data.selected.county]

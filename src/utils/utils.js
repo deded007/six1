@@ -9,7 +9,7 @@ export function openUrl(url) {
 
 export function getPTXData(url, para) {
     para = para ? "/" + para : "";
-    let fullUrl = consts.BASEURL + url + para + "?$format=JSON&$top=2";
+    let fullUrl = consts.BASEURL + url + para + "?$format=JSON&$top=10";
     console.log(fullUrl);
 
     return axios({

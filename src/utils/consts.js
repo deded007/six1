@@ -1,21 +1,21 @@
 
-export const APPID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
-export const APPKEY = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
-export const BASEURL = "https://ptx.111transportdata.tw/MOTC/";
+ export const APPID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
+ export const APPKEY = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
+export const BASEURL = "https://ptx.transportdata.tw/MOTC/";
 
 export const PTXURLOBJ = {
-  "Tourism.ScenicSpot": "v2/Tourism/ScenicSpot",
-  "Tourism.Restaurant": "v2/Tourism/Restaurant",
-  "Tourism.Hotel": "v2/Tourism/Hotel",
-  "Tourism.Activity": "v2/Tourism/Activity",
-  "Tourism.A1": "v2/Tourism/Bus/RealTimeByFrequency/TaiwanTrip",
-  "Tourism.A2": "v2/Tourism/Bus/RealTimeNearStop/TaiwanTrip",
-  "Tourism.N1": "v2/Tourism/Bus/EstimatedTimeOfArrival/TaiwanTrip",
-  "Tourism.Route": "v2/Tourism/Bus/Route/TaiwanTrip",
-  "Tourism.StopOfRoute": "v2/Tourism/Bus/StopOfRoute/TaiwanTrip",
-  "Tourism.Schedule": "v2/Tourism/Bus/Schedule/TaiwanTrip",
-  "Tourism.Shape": "v2/Tourism/Bus/Shape/TaiwanTrip",
-  "Tourism.S2TravelTime": "v2/Tourism/Bus/S2TravelTime/TaiwanTrip",
+  "SCENICSPOT": "v2/Tourism/ScenicSpot",
+  "RESTAUTANT": "v2/Tourism/Restaurant",
+  "HOTEL": "v2/Tourism/Hotel",
+  "ACTIVITY": "v2/Tourism/Activity",
+  "A1": "v2/Tourism/Bus/RealTimeByFrequency/TaiwanTrip",
+  "A2": "v2/Tourism/Bus/RealTimeNearStop/TaiwanTrip",
+  "N1": "v2/Tourism/Bus/EstimatedTimeOfArrival/TaiwanTrip",
+  "ROUTE": "v2/Tourism/Bus/Route/TaiwanTrip",
+  "STOPOFROUTE": "v2/Tourism/Bus/StopOfRoute/TaiwanTrip",
+  "SCHEDULE": "v2/Tourism/Bus/Schedule/TaiwanTrip",
+  "SHAPE": "v2/Tourism/Bus/Shape/TaiwanTrip",
+  "S2TRAVELTIMEe": "v2/Tourism/Bus/S2TravelTime/TaiwanTrip",
 };
 export const COUNTYOBJ= {
     臺北市: "Taipei",
