@@ -1,0 +1,37 @@
+* {
+  font-family: Noto Sans, Apple Casual, Corbel, Microsoft JhengHei Fixed, Microsoft JhengHei, sans-serif;
+}
+
+html {
+  // width: 1920px;
+  margin: 0 auto;
+  font-size: 85%;
+}
+body {
+  background-color: #eee;
+}
+
+@mixin dotdotdot($line) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+}
+
+.dotdotdot-1 {
+  @include dotdotdot(1);
+}
+.dotdotdot-2 {
+  @include dotdotdot(2);
+}
+.dotdotdot-3 {
+  @include dotdotdot(3);
+}
+.dotdotdot-4 {
+  @include dotdotdot(4);
+}
+.dotdotdot-5 {
+  @include dotdotdot(5);
+}
+
