@@ -19,6 +19,7 @@ const routes = [
 
 const router = createRouter({
   history:createWebHistory(),
+  base: '/six1',
   routes
 })
 
