@@ -1,4 +1,4 @@
-CMD /C npm run build
+CMD /C pnpm run build
 cd dist
 git init
 git add -A

@@ -2,6 +2,7 @@
 
 
 http://localhost:3001/
+https://deded007.github.io/six1/index.html
 
 + 活動作品頁
 https://2021.thef2e.com/works

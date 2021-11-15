@@ -1,6 +1,6 @@
 
 <template>
-  <div class="mx-auto my-4">
+  <div class="mx-auto my-4">{{type}}{{city}}
     <card1
       v-for="item in data.response"
       :key="item.id"
@@ -19,24 +19,26 @@ import { useRoute, onBeforeRouteUpdate } from "vue-router";
 
 export default {
   components: { card1 },
-  props: {},
-  setup() {
+  props: { type: String, city: String },
+  setup(props) {
     const route = useRoute();
     const data = reactive({
       response: [],
     });
     onMounted(() => {
-      search(route.params.type, route.params.city);
+      search();
     });
     // same as beforeRouteUpdate option with no access to `this`
     onBeforeRouteUpdate(async (to, from) => {
-      search(to.params.type, to.params.city);
+      search();
     });
-    const search = (type, city) => {
+
+    //router-view透過props傳入的縣市
+    const search = () => {
       utils
         .getPTXData(
-          consts.PTXURLOBJ[type],
-          consts.COUNTYOBJ[city],
+          consts.PTXURLOBJ[props.type],
+          consts.COUNTYOBJ[props.city],
           getQuerystring()
         )
         .then((res) => {

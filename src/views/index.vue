@@ -60,7 +60,7 @@
       <!-- city -->
       <div
         v-show="isShowCitys"
-        class="city-container flex flex-wrap w-[950px] p-4 text-gray-300 rounded-lg bg-[#313131] bg-opacity-30"
+        class="city-container flex flex-wrap w-[950px] p-4 text-gray-300 rounded-xl bg-[#313131] bg-opacity-30"
       >
         <div
           class="city"
@@ -76,12 +76,15 @@
     <div class="flex mx-auto my-12">
       <icon-type v-model:selectedType="selectedType"></icon-type>
     </div>
-    <router-view></router-view>
+    <router-view
+    :type="selectedType"
+    :city="selectedCity"
+    ></router-view>
   </div>
 </template>
 
 <script >
-import { ref, reactive, watch, onMounted } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import * as consts from "../utils/consts";
 import * as utils from "../utils/utils";
 import iconType from "./components/icon-type.vue";
