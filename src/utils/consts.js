@@ -1,6 +1,6 @@
 
- export const APPID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
- export const APPKEY = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
+export const APPID = import.meta.env.VITE_APPID;
+export const APPKEY = import.meta.env.VITE_APPKEY;
 export const BASEURL = "https://ptx.transportdata.tw/MOTC/";
 
 export const PTXURLOBJ = {

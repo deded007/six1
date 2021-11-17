@@ -1,152 +1,99 @@
 <template>
-  <h1 class="text-7xl">detail未完成</h1>
-  <div class="container">
-    <h1>https://leafletjs.com/reference-1.7.1.html</h1>
-    {{ data.response }}
-    <select v-model="data.selected.county">
-      <option
-        :value="county"
-        v-for="county in Object.keys(data.countyobj)"
+  <div>
+    {{data.response}}
+    <div class="w-full md:w-[60%] rounded-lg">
+      <img
+        src="https://fakeimg.pl/500x500/"
+        alt=""
       >
-        {{ county }}
-      </option>
-    </select>
-    <div class="grid">
-      <div id="map"></div>
     </div>
+    <div class="w-full md:w-[40%] rounded-lg">
+      <h1 class="text-lg text-gray-600">{{data.response.Name}}</h1>
+      <a
+        :href="data.response.WebsiteUrl"
+        target="_blank"
+        class="block text-gray-800 text-3xl leading-10"
+      >{{data.response.Name}}</a>
+      <div><i class="bi bi-alarm"></i>{{data.response.OpenTime}}</div>
+      <a
+        v-if="data.response.Phone"
+        :href="'tel:+'+data.response.Phone"
+        target="_blank"
+        class="mt-1 text-lg leading-tight font-medium text-black flex items-end"
+      >
+        <i class="bi bi-telephone"></i>
+        {{data.response.Phone}}</a>
+      <a
+        v-if="data.response.Address"
+        :href="go2GoogleMap(data.response)"
+        target="_blank"
+        class="mt-1 text-lg leading-tight font-medium text-black flex items-end"
+      >
+        <i class="bi bi-geo-alt"></i>
+        {{data.response.Address}}</a>
+    </div>
+    <hr>
+    <h2>景點介紹</h2>
+
+    <p class="mt-6 text-xl text-gray-700 dotdotdot-5">{{data.response.DescriptionDetail??data.response.Description}}</p>
+    <div id="map"></div>
+
   </div>
+
 </template>
 
 <script >
 import { ref, reactive, watch, onMounted } from "vue";
-const APPID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
-const APPKEY = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
-const BASEURL = "https://ptx.111transportdata.tw/MOTC/";
+import * as utils from "../utils/utils.js";
+import * as consts from "../utils/consts";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 
-const PTXURLOBJ = {
-  "Tourism.ScenicSpot": "v2/Tourism/ScenicSpot",
-  "Tourism.Restaurant": "v2/Tourism/Restaurant",
-  "Tourism.Hotel": "v2/Tourism/Hotel",
-  "Tourism.Activity": "v2/Tourism/Activity",
-  "Tourism.A1": "v2/Tourism/Bus/RealTimeByFrequency/TaiwanTrip",
-  "Tourism.A2": "v2/Tourism/Bus/RealTimeNearStop/TaiwanTrip",
-  "Tourism.N1": "v2/Tourism/Bus/EstimatedTimeOfArrival/TaiwanTrip",
-  "Tourism.Route": "v2/Tourism/Bus/Route/TaiwanTrip",
-  "Tourism.StopOfRoute": "v2/Tourism/Bus/StopOfRoute/TaiwanTrip",
-  "Tourism.Schedule": "v2/Tourism/Bus/Schedule/TaiwanTrip",
-  "Tourism.Shape": "v2/Tourism/Bus/Shape/TaiwanTrip",
-  "Tourism.S2TravelTime": "v2/Tourism/Bus/S2TravelTime/TaiwanTrip",
-};
 export default {
-  setup() {
+  props: { type: String, city: String },
+  setup(props) {
+    const router = useRoute();
     const data = reactive({
-      response: [],
-      selected: { county: "新北市" },
-      countyobj: {
-        臺北市: "Taipei",
-        新北市: "NewTaipei",
-        桃園市: "Taoyuan",
-        臺中市: "Taichung",
-        臺南市: "Tainan",
-        高雄市: "Kaohsiung",
-        基隆市: "Keelung",
-        新竹市: "Hsinchu",
-        新竹縣: "HsinchuCounty",
-        苗栗縣: "MiaoliCounty",
-        彰化縣: "ChanghuaCounty",
-        南投縣: "NantouCounty",
-        雲林縣: "YunlinCounty",
-        嘉義縣: "ChiayiCounty",
-        嘉義市: "Chiayi",
-        屏東縣: "PingtungCounty",
-        宜蘭縣: "YilanCounty",
-        花蓮縣: "HualienCounty",
-        臺東縣: "TaitungCounty",
-        金門縣: "KinmenCounty",
-        澎湖縣: "PenghuCounty",
-        連江縣: "LienchiangCounty",
-      },
-    });
-
-    getPTXData(
-      PTXURLOBJ["Tourism.ScenicSpot"],
-      data.countyobj[data.selected.county]
-    ).then((res) => {
-      data.response = res;
+      response: {},
     });
 
     onMounted(() => {
-      var map = L.map("map").setView([51.505, -0.09], 13);
+      utils
+        .getPTXData(
+          consts.PTXURLOBJ[props.type],
+          "",
+          "&$filter=ID%20eq%20%27" + router.params.id + "%27"
+        )
+        .then((res) => {
+          data.response = res[0];
+          debugger;
+          if (data.response?.Position?.PositionLat) {
+            var lat = data.response.Position.PositionLat;
+            var lon = data.response.Position.PositionLon;
+            var map = L.map("map").setView([lat, lon], 13);
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(map);
 
-      L.marker([51.5, -0.09])
-        .addTo(map)
-        .bindPopup("A pretty CSS3 popup.<br> Easily customizable.")
-        .openPopup();
-    });
-    watch(
-      () => data.selected,
-      (newVal) => {
-        console.log(newVal);
-
-        getPTXData(
-          PTXURLOBJ["Tourism.ScenicSpot"],
-          data.countyobj[data.selected.county]
-        ).then((res) => {
-          data.response = res;
+            L.marker([lat, lon])
+              .addTo(map)
+              .bindPopup("A pretty CSS3 popup.<br> Easily customizable.")
+              .openPopup();
+          }
         });
-      },
-      { immediate: true }
-    );
+    });
 
-    return { data };
+    function go2GoogleMap(item) {
+      if (item.Position && item.Position.PositionLon)
+        return `https://www.google.com.tw/maps/@${item.Position.PositionLat},${item.Position.PositionLon},16z`;
+      else return "https://www.google.com.tw/maps/search/" + item.Name;
+    }
+
+    return { data, go2GoogleMap };
   },
 };
-
-function getPTXData(url, para) {
-  para = para ? "/" + para : "";
-  let fullUrl = BASEURL + url + para + "?$format=JSON&$top=2";
-  console.log(fullUrl);
-
-  return axios({
-    method: "get",
-    url: fullUrl,
-    headers: getAuthorizationHeader(),
-  })
-    .then((response) => response.data)
-    .catch((error) => console.log(error));
-}
-function getData(enumObj, key) {
-  if (enumObj[key]) return enumObj[key];
-  return "";
-}
-
-// API 驗證用
-function getAuthorizationHeader() {
-  var GMTString = new Date().toGMTString();
-  var ShaObj = new jsSHA("SHA-1", "TEXT");
-  ShaObj.setHMACKey(APPKEY, "TEXT");
-  ShaObj.update("x-date: " + GMTString);
-  var HMAC = ShaObj.getHMAC("B64");
-  var Authorization =
-    'hmac username="' +
-    APPID +
-    '", algorithm="hmac-sha1", headers="x-date", signature="' +
-    HMAC +
-    '"';
-  return {
-    Authorization: Authorization,
-    "X-Date": GMTString /*,'Accept-Encoding': 'gzip'*/,
-  }; //如果要將js運行在伺服器，可額外加入 'Accept-Encoding': 'gzip'，要求壓縮以減少網路傳輸資料量
-}
 </script>
 
 <style lang="scss" scoped>
-#map {
-  height: 180px;
-}
 </style>

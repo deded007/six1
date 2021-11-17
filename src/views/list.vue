@@ -5,6 +5,7 @@
       v-for="item in data.response"
       :key="item.id"
       :item="item"
+      :type="type"
     >
     </card1>
   </div>
