@@ -1,6 +1,6 @@
 
 <template>
-  <div class="mx-auto my-4">{{type}}{{city}}
+  <div class="mx-auto my-4">
     <card1
       v-for="item in data.response"
       :key="item.id"
@@ -9,6 +9,10 @@
     >
     </card1>
   </div>
+  <button
+    class="block mx-auto text-xl font-bold border-gray-500 border-solid border-2 bg-whtie  rounded-xl px-16 py-2 hover:bg-[#FEB155] hover:border-[#FEB155]"
+    @click="search1"
+  >顯示更多</button>
 </template>
 
 <script >
@@ -23,6 +27,7 @@ export default {
   props: { type: String, city: String },
   setup(props) {
     const route = useRoute();
+    const page = ref(0);
     const data = reactive({
       response: [],
     });
@@ -44,18 +49,35 @@ export default {
         )
         .then((res) => {
           if (res) {
-            data.response = res;
+            data.response = data.response.concat(res);
           }
         });
+    };
+    const search1 = () => {
+      page.value++;
+      console.log(page.value);
+
+      search();
     };
     function getQuerystring() {
       var keyword = route.query.keyword;
       if (keyword)
         return `&$filter=(contains(Name,%27${keyword}%27)%20or%20contains(Description,%27${keyword}%27))`;
+      if (page.value > 0) return `&$skip=` + 10 * page.value;
     }
-    // watch(counter, (newValue, oldValue) => {
-    //   console.log('The new counter value is: ' + counter.value)
-    // })
+    
+    watch(() => route.query.keyword, (newValue, oldValue) => {
+      data.response = [];
+    });
+    //the first argument of watch can be array, function or Ref<T>
+    //props passed to setup function is reactive object
+    watch(() => props.city, (newValue, oldValue) => {
+      data.response = [];
+    });
+    watch(() => props.type, (newValue, oldValue) => {
+      data.response = [];
+    });
+
 
     // const city = computed(() => {
     //   return route.params.city;
@@ -63,19 +85,7 @@ export default {
     // const type = computed(() => {
     //   return route.params.type;
     // });
-    return { data, search };
-  },
-};
-
-let m = {
-  go2GoogleMap(item) {
-    if (item.Position && item.Position.PositionLon)
-      return `https://www.google.com.tw/maps/@${item.Position.PositionLat},${item.Position.PositionLon},16z`;
-    else return "https://www.google.com.tw/maps/search/" + item.Name;
-  },
-  getImage(picObj) {
-    if (picObj && picObj.PictureUrl1) return picObj.PictureUrl1;
-    else return "https://fakeimg.pl/500x500/";
+    return { data, search1, search, page };
   },
 };
 </script>

@@ -1,42 +1,55 @@
 <template>
-  <div>
-    {{data.response}}
-    <div class="w-full md:w-[60%] rounded-lg">
-      <img
-        src="https://fakeimg.pl/500x500/"
-        alt=""
-      >
+  <a
+    class=" text-3xl flex items-end font-bold mb-6 cursor-pointer"
+    @click="$router.go(-1)"
+  ><i class="bi bi-chevron-compact-left" /> 返回</a>
+  <div class="bg-white p-12 rounded-lg">
+    <div class="flex">
+      <div class="w-full md:w-[55%]">
+        <img
+          :src="getImage(data.response.Picture)"
+          class=" rounded-3xl"
+        >
+      </div>
+      <div class="w-full md:w-[45%] rounded-lg pl-20">
+        <div class="text-2xl font-bold mb-8 text-[#FEB155]">{{data.response.Class || data.response.Class1}}</div>
+        <h1 class="text-3xl font-bold text-gray-600">{{data.response.Name}}</h1>
+        <a
+          :href="data.response.WebsiteUrl"
+          target="_blank"
+          class="mt-4 text-gray-800 text-lg flex items-end"
+        ><i class="bi bi-globe"></i>網站</a>
+        <div
+          v-if="data.response.OpenTime"
+          class="mt-4 "
+        ><i class="bi bi-alarm"></i>{{data.response.OpenTime}}</div>
+        <a
+          v-if="data.response.Phone"
+          :href="'tel:+'+data.response.Phone"
+          target="_blank"
+          class="mt-4 text-gray-800 text-lg leading-tight font-medium text-black flex items-end"
+        >
+          <i class="bi bi-telephone"></i>
+          {{data.response.Phone}}</a>
+        <a
+          v-if="data.response.Address"
+          :href="go2GoogleMap(data.response)"
+          target="_blank"
+          class="mt-4 text-gray-800 text-lg leading-tight font-medium text-black flex items-end"
+        >
+          <i class="bi bi-geo-alt"></i>
+          {{data.response.Address}}</a>
+      </div>
     </div>
-    <div class="w-full md:w-[40%] rounded-lg">
-      <h1 class="text-lg text-gray-600">{{data.response.Name}}</h1>
-      <a
-        :href="data.response.WebsiteUrl"
-        target="_blank"
-        class="block text-gray-800 text-3xl leading-10"
-      >{{data.response.Name}}</a>
-      <div><i class="bi bi-alarm"></i>{{data.response.OpenTime}}</div>
-      <a
-        v-if="data.response.Phone"
-        :href="'tel:+'+data.response.Phone"
-        target="_blank"
-        class="mt-1 text-lg leading-tight font-medium text-black flex items-end"
-      >
-        <i class="bi bi-telephone"></i>
-        {{data.response.Phone}}</a>
-      <a
-        v-if="data.response.Address"
-        :href="go2GoogleMap(data.response)"
-        target="_blank"
-        class="mt-1 text-lg leading-tight font-medium text-black flex items-end"
-      >
-        <i class="bi bi-geo-alt"></i>
-        {{data.response.Address}}</a>
-    </div>
-    <hr>
-    <h2>景點介紹</h2>
+    <div class="my-12  border-gray-300 border-b-solid border-b " />
 
-    <p class="mt-6 text-xl text-gray-700 dotdotdot-5">{{data.response.DescriptionDetail??data.response.Description}}</p>
-    <div id="map"></div>
+    <h2 class="text-3xl mt-20 text-center">景點介紹</h2>
+    <p class="mx-24 mt-12 text-xl">{{data.response.DescriptionDetail??data.response.Description}}</p>
+
+    <div
+      id="map"
+      class="h-[400px] mt-16 mb-8"
+    ></div>
 
   </div>
 
@@ -65,7 +78,7 @@ export default {
         )
         .then((res) => {
           data.response = res[0];
-          debugger;
+
           if (data.response?.Position?.PositionLat) {
             var lat = data.response.Position.PositionLat;
             var lon = data.response.Position.PositionLon;
@@ -78,7 +91,7 @@ export default {
 
             L.marker([lat, lon])
               .addTo(map)
-              .bindPopup("A pretty CSS3 popup.<br> Easily customizable.")
+              .bindPopup(data.response.Name)
               .openPopup();
           }
         });
@@ -89,11 +102,18 @@ export default {
         return `https://www.google.com.tw/maps/@${item.Position.PositionLat},${item.Position.PositionLon},16z`;
       else return "https://www.google.com.tw/maps/search/" + item.Name;
     }
+    function getImage(picObj) {
+      if (picObj && picObj.PictureUrl1) return picObj.PictureUrl1;
+      else return "https://fakeimg.pl/500x500/";
+    }
 
-    return { data, go2GoogleMap };
+    return { data, go2GoogleMap, getImage };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.bi {
+  @apply mb-1 mr-2;
+}
 </style>

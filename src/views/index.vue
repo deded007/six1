@@ -1,9 +1,9 @@
 <template>
   <main class="h-[600px] text-white bg-cover ">
     <div class="mx-auto w-11/12 xl:w-3/4 ">
-      <div class="border-b-solid border-b-2 border-white text-2xl">
+      <div class="border-b-solid border-b-2 border-white text-xl pb-4 pt-8">
         <span
-          class="mr-6 hover:text-[#FEB155] cursor-pointer"
+          class="mr-8 hover:text-[#FEB155] cursor-pointer"
           @click="
             utils.openUrl('https://tailwindcss.tw/docs/just-in-time-mode')
           "
@@ -77,10 +77,14 @@
       <icon-type v-model:selectedType="selectedType"></icon-type>
     </div>
     <router-view
-    :type="selectedType"
-    :city="selectedCity"
+      :type="selectedType"
+      :city="selectedCity"
     ></router-view>
   </div>
+  <i
+    class="bi bi-arrow-up-circle-fill fixed bottom-6 right-8 text-6xl text-[#FEB155] cursor-pointer"
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+  ></i>
 </template>
 
 <script >
@@ -160,6 +164,8 @@ h2 {
     opacity: 0.35;
     @apply absolute top-[-24px] left-[204px] w-0 h-0 border-solid;
   }
+}
+.bi-arrow-up-circle{
 }
 .really-bold {
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black,
